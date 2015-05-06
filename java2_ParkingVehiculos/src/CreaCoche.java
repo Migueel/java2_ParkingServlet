@@ -72,22 +72,22 @@ public class CreaCoche extends HttpServlet {
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection conexion = DriverManager.getConnection("jdbc:mysql:thin:natiteka.zapto.org:3306:parkingVehiculos", "aparcacoches", "anboto");
+			Connection conexion = DriverManager.getConnection("jdbc:mysql://natiteka.zapto.org:3306/parkingVehiculos", "aparcacoches", "anboto");
 			Statement sentencia = conexion.createStatement();
 			
 			String create = 
-					"CREATE TABLE IF NOT EXIST Coches(" +
-					"matricula varchar(7) primary key not null" +
-					"marca varchar(30)" +
-					"color varchar(30)" +
-					"combustible varchar(30)" +
-					"consumo int(2)" +
-					"automatico boolean" +
+					"CREATE TABLE IF NOT EXISTS Coches(" +
+					"matricula varchar(7) primary key not null," +
+					"marca varchar(30)," +
+					"color varchar(30)," +
+					"combustible varchar(30)," +
+					"consumo int(2)," +
+					"automatico boolean," +
 					"numRuedas int(2));";
 			
 			String insert =
 					"INSERT INTO Coches" +
-					"VALUES(" + matricula + ", " + marca + ", " + color + ", " + combustible + ", " + consumo + ", " + auto + ", " + numRuedas +");";
+					"VALUES('" + matricula + "', '" + marca + "', '" + color + "','" + combustible + "', " + consumo + ", " + auto + ", " + numRuedas +");";
 			
 			String select =
 					"SELECT * FROM Coches" +
@@ -116,6 +116,8 @@ public class CreaCoche extends HttpServlet {
 			out.println("</body></html>");
 		
 		}catch(Exception e){
+			
+			out.println(e);
 			
 		}
 	}
