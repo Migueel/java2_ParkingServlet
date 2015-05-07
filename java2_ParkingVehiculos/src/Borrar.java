@@ -50,12 +50,11 @@ public class Borrar extends HttpServlet {
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection conexion = DriverManager.getConnection("jdbc:mysql:thin:natiteka.zapto.org:3306:parkingVehiculos", "aparcacoches", "anboto");
+			Connection conexion = DriverManager.getConnection("jdbc:mysql://natiteka.zapto.org:3306/parkingVehiculos", "aparcacoches", "anboto");
 			Statement sentencia = conexion.createStatement();
 			
 			String borrar = 
-					"DELETE FROM Coches" +
-					"WHERE matricula = " + matricula +";";
+					"DELETE FROM coches WHERE matricula = '"+matricula+"';";
 			
 			sentencia.execute(borrar);
 						 
@@ -66,7 +65,7 @@ public class Borrar extends HttpServlet {
 			out.println("<body>");
 			out.println("<h1>Respuesta desde servidor</h1>");
 
-			if (sentencia.execute(borrar)) {
+			if (sentencia.execute(borrar) == true) {
 				out.println("<p>Coche con la matricula " + matricula +" se ha borrado correctamente</p>");	
 			}else {
 				out.println("No existe el coche con la matricula" + matricula);
@@ -74,7 +73,7 @@ public class Borrar extends HttpServlet {
 			out.println("</body></html>");
 		
 		}catch(Exception e){
-			
+			out.println(e);
 		}
 	}
 }

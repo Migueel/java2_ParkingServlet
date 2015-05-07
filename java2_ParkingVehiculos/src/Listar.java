@@ -48,11 +48,11 @@ public class Listar extends HttpServlet {
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection conexion = DriverManager.getConnection("jdbc:mysql:thin:natiteka.zapto.org:3306:parkingVehiculos", "aparcacoches", "anboto");
+			Connection conexion = DriverManager.getConnection("jdbc:mysql://natiteka.zapto.org:3306/parkingVehiculos", "aparcacoches", "anboto");
 			Statement sentencia = conexion.createStatement();
 			
 			String select =
-					"SELECT * FROM Coches;";
+					"SELECT * FROM coches;";
 		
 			ResultSet coches = sentencia.executeQuery(select);
 			

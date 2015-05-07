@@ -48,14 +48,14 @@ public class Buscar extends HttpServlet {
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection conexion = DriverManager.getConnection("jdbc:mysql:thin:natiteka.zapto.org:3306:parkingVehiculos", "aparcacoches", "anboto");
+			Connection conexion = DriverManager.getConnection("jdbc:mysql://natiteka.zapto.org:3306/parkingVehiculos", "aparcacoches", "anboto");
 			Statement sentencia = conexion.createStatement();
 			
 			String select =
-					"SELECT * FROM Coches" +
-					"WHERE matricula = " + matricula + ";";
+					"SELECT * FROM coches WHERE matricula = '"+matricula+"';";
 		
 			ResultSet viejoCoche = sentencia.executeQuery(select);
+			viejoCoche.next();
 			
 			Vehiculo coche = new Coche(
 						
@@ -76,7 +76,7 @@ public class Buscar extends HttpServlet {
 			out.println("</body></html>");
 		
 		}catch(Exception e){
-			
+			out.println(e);
 		}
 	}
 }

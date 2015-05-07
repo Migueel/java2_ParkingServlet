@@ -45,8 +45,7 @@ public class CreaCoche extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-	
-		boolean auto = false;
+
 		int consumo = 0;
 		int numPinones = 0;
 		
@@ -54,9 +53,7 @@ public class CreaCoche extends HttpServlet {
 		int numRuedas = Integer.parseInt(request.getParameter("numRuedas").trim());
 		String marca = request.getParameter("marca");
 		String combustible =  request.getParameter("combustible");
-		if (request.getParameter("auto") != ""){
-			auto = Boolean.valueOf(request.getParameter("auto"));
-		}
+		int auto = Integer.parseInt(request.getParameter("auto").trim());
 		if (request.getParameter("consumo") != ""){
 			consumo = Integer.parseInt(request.getParameter("consumo").trim());
 		}
@@ -68,7 +65,7 @@ public class CreaCoche extends HttpServlet {
 		}
 		String tipoBici = request.getParameter("tipo");
 	
-		ParkingVehiculos.addVehiculo(tipoVehiculo, numRuedas, combustible, marca, auto, consumo, matricula, color, codBarras, numPinones, tipoBici);
+		//ParkingVehiculos.addVehiculo(tipoVehiculo, numRuedas, combustible, marca, auto, consumo, matricula, color, codBarras, numPinones, tipoBici);
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -76,7 +73,7 @@ public class CreaCoche extends HttpServlet {
 			Statement sentencia = conexion.createStatement();
 			
 			String create = 
-					"CREATE TABLE IF NOT EXISTS Coches(" +
+					"CREATE TABLE IF NOT EXISTS coches(" +
 					"matricula varchar(7) primary key not null," +
 					"marca varchar(30)," +
 					"color varchar(30)," +
@@ -85,17 +82,18 @@ public class CreaCoche extends HttpServlet {
 					"automatico boolean," +
 					"numRuedas int(2));";
 			
+			
 			String insert =
-					"INSERT INTO Coches" +
-					"VALUES('" + matricula + "', '" + marca + "', '" + color + "','" + combustible + "', " + consumo + ", " + auto + ", " + numRuedas +");";
+			"INSERT INTO coches(matricula, marca, color, combustible, consumo, automatico, numRuedas)" +
+			"VALUES('"+matricula+"','"+marca+"','"+color+"','"+combustible+"','"+consumo+"','"+auto+"','"+numRuedas+"')";
 			
 			String select =
-					"SELECT * FROM Coches" +
-					"WHERE matricula = " + matricula + ";";
+					"SELECT * FROM coches WHERE matricula = '"+matricula+"';";
 			
 			sentencia.execute(create);
 			sentencia.execute(insert);
 			ResultSet nuevoCoche = sentencia.executeQuery(select);
+			nuevoCoche.next();
 			
 			Vehiculo coche = new Coche(
 						
@@ -116,9 +114,7 @@ public class CreaCoche extends HttpServlet {
 			out.println("</body></html>");
 		
 		}catch(Exception e){
-			
 			out.println(e);
-			
 		}
 	}
 }
